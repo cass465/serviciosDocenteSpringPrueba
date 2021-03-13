@@ -34,7 +34,7 @@ public class DocenteController {
 			status = HttpStatus.CREATED;
 			break;
 		case "La cedula ingresada ya existe":
-			status = HttpStatus.BAD_REQUEST;
+			status = HttpStatus.CONFLICT;
 			break;
 		case "Campo cedula requerido":
 			status = HttpStatus.BAD_REQUEST;
@@ -54,7 +54,7 @@ public class DocenteController {
 			status = HttpStatus.OK;
 			break;
 		case "La cedula ingresada ya existe":
-			status = HttpStatus.BAD_REQUEST;
+			status = HttpStatus.CONFLICT;
 			break;
 		case "El id del docente no existe":
 			status = HttpStatus.NOT_FOUND;
