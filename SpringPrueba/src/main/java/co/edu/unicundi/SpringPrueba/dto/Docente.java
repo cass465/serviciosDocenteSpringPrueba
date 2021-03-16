@@ -1,15 +1,27 @@
 package co.edu.unicundi.SpringPrueba.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("Modelo Docente")
 public class Docente {
+
+	@ApiModelProperty(value = "Id del docente", required = false)
 	private Integer id;
+
+	@ApiModelProperty(value = "Cedula del docente", required = true)
 	private String cedula;
+
+	@ApiModelProperty(value = "Nombre del docente", required = false)
 	private String nombre;
+
+	@ApiModelProperty(value = "Apellido del docente", required = false)
 	private String apellido;
-	
+
 	public Docente() {
-		
+
 	}
-	
+
 	/**
 	 * @param id
 	 * @param nombre
@@ -35,7 +47,7 @@ public class Docente {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return the cedula
 	 */
@@ -77,6 +89,5 @@ public class Docente {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-	
-	
+
 }
