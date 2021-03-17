@@ -6,16 +6,16 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("Modelo Docente")
 public class Docente {
 
-	@ApiModelProperty(value = "Id del docente", required = false)
+	@ApiModelProperty(value = "Id del docente", required = false,allowableValues = "range[1, 100]")	
 	private Integer id;
-
-	@ApiModelProperty(value = "Cedula del docente", required = true)
+	
+	@ApiModelProperty(value = "Cedula del docente", required = true,allowableValues = "range[7, 10]")
 	private String cedula;
 
-	@ApiModelProperty(value = "Nombre del docente", required = false)
+	@ApiModelProperty(value = "Nombre del docente", required = false,allowableValues = "range[3, 15]")
 	private String nombre;
 
-	@ApiModelProperty(value = "Apellido del docente", required = false)
+	@ApiModelProperty(value = "Apellido del docente", required = false, allowableValues = "range[3, 10]")
 	private String apellido;
 
 	public Docente() {
