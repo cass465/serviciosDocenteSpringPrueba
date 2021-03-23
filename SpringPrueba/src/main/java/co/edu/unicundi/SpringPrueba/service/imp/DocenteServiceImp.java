@@ -6,6 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicundi.SpringPrueba.dto.Docente;
+import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
+import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
+import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
+import co.edu.unicundi.SpringPrueba.exception.RegisteredObjectException;
 import co.edu.unicundi.SpringPrueba.service.IDocenteService;
 
 @Service
@@ -18,22 +22,22 @@ public class DocenteServiceImp implements IDocenteService {
 	}
 
 	@Override
-	public String crear(Docente docente) {
+	public void crear(Docente docente) throws RegisteredObjectException, FieldRequiredException {
 		if (docente.getCedula() != null) {
 			if (validarCedulaExistente(docente.getCedula(), null)) {
 				docente = asignarId(docente);
 				docentes.add(docente);
-				return "Docente registrado correctamente";
 			} else {
-				return "La cedula ingresada ya existe";
+				throw new RegisteredObjectException("La cedula ingresada ya existe");
 			}
 		} else {
-			return "Campo cedula requerido";
+			throw new FieldRequiredException("Campo cedula requerido");
 		}
 	}
 
 	@Override
-	public String editar(Docente docente) {
+	public void editar(Docente docente)
+			throws RegisteredObjectException, ObjectNotFoundException, FieldRequiredException {
 		if (docente.getId() != null) {
 			if (docente.getCedula() != null) {
 				if (validarIdDocente(docente.getId())) {
@@ -43,51 +47,59 @@ public class DocenteServiceImp implements IDocenteService {
 								docentes.set(i, docente);
 							}
 						}
-						return "Docente editado correctamente";
 					} else {
-						return "La cedula ingresada ya existe";
+						throw new RegisteredObjectException("La cedula ingresada ya existe");
 					}
 				} else {
-					return "El id del docente no existe";
+					throw new ObjectNotFoundException("El id del docente no existe");
 				}
 			} else {
-				return "Campo cedula requerido";
+				throw new FieldRequiredException("Campo cedula requerido");
 			}
 		} else {
-			return "Campo id requerido";
+			throw new FieldRequiredException("Campo id requerido");
 		}
 	}
 
 	@Override
-	public String eliminar(Integer id) {
+	public void eliminar(Integer id) throws ObjectNotFoundException {
 		if (validarIdDocente(id)) {
 			for (int i = 0; i < docentes.size(); i++) {
 				if (docentes.get(i).getId().equals(id)) {
 					docentes.remove(i);
 				}
 			}
-			return "Docente eliminado correctamente";
 		} else {
-			return "El id del docente no existe";
+			throw new ObjectNotFoundException("El id del docente no existe");
 		}
 	}
 
 	@Override
-	public List<Docente> listar() {
-		return docentes;
+	public List<Docente> listar() throws ListNoContentException {
+
+		if (docentes.size() > 0) {
+			return docentes;
+		} else {
+			throw new ListNoContentException();
+		}
 	}
 
 	@Override
-	public Docente obtenerPorId(Integer id) {
+	public Docente obtenerPorId(Integer id) throws ObjectNotFoundException {
 		Docente docente = new Docente();
 		for (int i = 0; i < docentes.size(); i++) {
 			if (docentes.get(i).getId().equals(id)) {
 				docente = docentes.get(i);
 			}
 		}
-		return docente;
+
+		if (docente.getId() != null) {
+			return docente;
+		} else {
+			throw new ObjectNotFoundException("El id del docente no existe");
+		}
 	}
-	
+
 	/** Metodos de logica **/
 	private Docente asignarId(Docente docente) {
 		int nDocentes = 0;
@@ -115,7 +127,7 @@ public class DocenteServiceImp implements IDocenteService {
 		}
 		return validacion;
 	}
-	
+
 	private boolean validarIdDocente(int id) {
 		boolean validacion = false;
 		for (Docente docente : docentes) {

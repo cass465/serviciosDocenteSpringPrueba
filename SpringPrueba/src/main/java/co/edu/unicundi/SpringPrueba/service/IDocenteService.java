@@ -5,13 +5,22 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicundi.SpringPrueba.dto.Docente;
+import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
+import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
+import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
+import co.edu.unicundi.SpringPrueba.exception.RegisteredObjectException;
 
 @Service
 public interface IDocenteService {
-	String crear(Docente docente);
-	String editar(Docente docente);
-	String eliminar(Integer id);
-	List<Docente> listar();
-	Docente obtenerPorId(Integer id);
+	
+	void crear(Docente docente) throws RegisteredObjectException, FieldRequiredException;
+	
+	void editar(Docente docente) throws RegisteredObjectException, ObjectNotFoundException, FieldRequiredException;
+	
+	void eliminar(Integer id) throws ObjectNotFoundException;
+	
+	List<Docente> listar() throws ListNoContentException;
+	
+	Docente obtenerPorId(Integer id) throws ObjectNotFoundException;
 	
 }
