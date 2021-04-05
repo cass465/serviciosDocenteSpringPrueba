@@ -3,7 +3,6 @@ package co.edu.unicundi.SpringPrueba.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +43,7 @@ public class DocenteController {
 			@ApiResponse(code = HttpServletResponse.SC_CONFLICT, message = "La cedula ya existe"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Campo cedula requerido") })
 	public ResponseEntity<?> crear(
-			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con sus datos", required = true) @Valid @RequestBody Docente docente)
+			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con sus datos", required = true) @RequestBody Docente docente)
 			throws RegisteredObjectException, FieldRequiredException {
 
 		docenteService.crear(docente);
@@ -58,7 +57,7 @@ public class DocenteController {
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "El id del docente no existe"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Campo cedula y id requeridos") })
 	public ResponseEntity<?> editar(
-			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con los datos a editar", required = true) @Valid @RequestBody Docente docente)
+			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con los datos a editar", required = true) @RequestBody Docente docente)
 			throws RegisteredObjectException, ObjectNotFoundException, FieldRequiredException {
 
 		docenteService.editar(docente);
