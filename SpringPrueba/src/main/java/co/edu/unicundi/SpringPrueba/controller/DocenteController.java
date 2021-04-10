@@ -3,6 +3,7 @@ package co.edu.unicundi.SpringPrueba.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicundi.SpringPrueba.dto.Docente;
+import co.edu.unicundi.SpringPrueba.entity.Docente;
 import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
 import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
 import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
@@ -43,7 +44,7 @@ public class DocenteController {
 			@ApiResponse(code = HttpServletResponse.SC_CONFLICT, message = "La cedula ya existe"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Campo cedula requerido") })
 	public ResponseEntity<?> crear(
-			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con sus datos", required = true) @RequestBody Docente docente)
+			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con sus datos", required = true) @Valid @RequestBody Docente docente)
 			throws RegisteredObjectException, FieldRequiredException {
 
 		docenteService.crear(docente);
@@ -57,7 +58,7 @@ public class DocenteController {
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "El id del docente no existe"),
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Campo cedula y id requeridos") })
 	public ResponseEntity<?> editar(
-			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con los datos a editar", required = true) @RequestBody Docente docente)
+			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con los datos a editar", required = true) @Valid @RequestBody Docente docente)
 			throws RegisteredObjectException, ObjectNotFoundException, FieldRequiredException {
 
 		docenteService.editar(docente);
@@ -87,15 +88,27 @@ public class DocenteController {
 		return new ResponseEntity<List<Docente>>(docentes, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/obtener/{id}")
+	@GetMapping(path = "/obtenerPorId/{id}")
 	@ApiOperation(value = "Obtener por id", notes = "Obtiene al docente filtrando por id")
 	@ApiResponses(value = { @ApiResponse(code = HttpServletResponse.SC_OK, message = "Docente encontrado"),
 			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "No se encontro el docente") })
-	public ResponseEntity<?> obtener(
+	public ResponseEntity<?> obtenerPorId(
 			@ApiParam(name = "id", type = "Integer", value = "Id del docente a obtener", required = true) @PathVariable Integer id)
 			throws ObjectNotFoundException {
 
 		Docente docente = docenteService.obtenerPorId(id);
+		return new ResponseEntity<Docente>(docente, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/obtenerPorCedula/{cedula}")
+	@ApiOperation(value = "Obtener por cedula", notes = "Obtiene al docente filtrando por cedula")
+	@ApiResponses(value = { @ApiResponse(code = HttpServletResponse.SC_OK, message = "Docente encontrado"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "No se encontro el docente") })
+	public ResponseEntity<?> obtenerPorCedula(
+			@ApiParam(name = "cedula", type = "String", value = "Correo del docente a obtener", required = true) @PathVariable String cedula)
+			throws ObjectNotFoundException {
+
+		Docente docente = docenteService.obtenerPorCedula(cedula);
 		return new ResponseEntity<Docente>(docente, HttpStatus.OK);
 	}
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import co.edu.unicundi.SpringPrueba.dto.Docente;
+import co.edu.unicundi.SpringPrueba.entity.Docente;
 import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
 import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
 import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
@@ -22,5 +22,7 @@ public interface IDocenteService {
 	List<Docente> listar() throws ListNoContentException;
 	
 	Docente obtenerPorId(Integer id) throws ObjectNotFoundException;
+	
+	Docente obtenerPorCedula(String cedula) throws ObjectNotFoundException;
 	
 }

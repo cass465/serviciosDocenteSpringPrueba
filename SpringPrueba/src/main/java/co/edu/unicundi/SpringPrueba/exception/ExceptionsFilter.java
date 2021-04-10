@@ -49,7 +49,7 @@ public class ExceptionsFilter extends ResponseEntityExceptionHandler {
 
 		String errors = "";
 		for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-			errors += error.getField() + ": " + error.getDefaultMessage() + " ";
+			errors += error.getField().toUpperCase() + ": " + error.getDefaultMessage() + ". ";
 		}
 
 		String statusString = status.toString().split(" ")[0];
