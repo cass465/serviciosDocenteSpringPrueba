@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/docentes")
 @Api(value = "Users microservice", description = "Gestion de los docentes")
-public class DocenteController 
+public class DocenteController {
 
 	@Autowired
 	private IDocenteService docenteService;
