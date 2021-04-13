@@ -35,6 +35,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "Users microservice", description = "Gestion de los docentes")
 public class DocenteController {
 
+	
+
 	@Autowired
 	private IDocenteService docenteService;
 
