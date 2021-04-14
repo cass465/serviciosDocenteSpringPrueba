@@ -2,12 +2,13 @@ package co.edu.unicundi.SpringPrueba.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import co.edu.unicundi.SpringPrueba.entity.Docente;
 
 @Repository
-public interface IDocenteRepo extends JpaRepository<Docente, Integer> {
+public interface IDocenteRepo extends JpaRepository<Docente, Integer>, PagingAndSortingRepository<Docente, Integer> {
 	
 	@Query(value = "SELECT * FROM docente d WHERE d.cedula = ?1", nativeQuery = true)
 	Docente obtenerPorCedulaSQL(String cedula);

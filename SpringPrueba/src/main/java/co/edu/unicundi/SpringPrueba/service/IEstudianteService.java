@@ -1,12 +1,27 @@
 package co.edu.unicundi.SpringPrueba.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import co.edu.unicundi.SpringPrueba.dto.Estudiante;
+import co.edu.unicundi.SpringPrueba.entity.Estudiante;
+import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
+import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
+import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
+import co.edu.unicundi.SpringPrueba.exception.ParameterInvalidException;
+import co.edu.unicundi.SpringPrueba.exception.RegisteredObjectException;
 
 @Service
 public interface IEstudianteService {
 
-	Estudiante obtener();
-	
+	void crear(Estudiante estudiante) throws RegisteredObjectException, FieldRequiredException, ObjectNotFoundException;
+
+	void editar(Estudiante estudiante) throws RegisteredObjectException, ObjectNotFoundException, FieldRequiredException;
+
+	void eliminar(Integer id) throws ObjectNotFoundException;
+
+	List<Estudiante> listar(Integer nPagina, Integer cantidad) throws ListNoContentException, ParameterInvalidException;
+
+	Estudiante obtenerPorId(Integer id) throws ObjectNotFoundException;
+
 }

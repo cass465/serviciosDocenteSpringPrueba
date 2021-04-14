@@ -21,6 +21,7 @@ import co.edu.unicundi.SpringPrueba.entity.Docente;
 import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
 import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
 import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
+import co.edu.unicundi.SpringPrueba.exception.ParameterInvalidException;
 import co.edu.unicundi.SpringPrueba.exception.RegisteredObjectException;
 import co.edu.unicundi.SpringPrueba.service.IDocenteService;
 import io.swagger.annotations.Api;
@@ -77,14 +78,17 @@ public class DocenteController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping(path = "/listar")
-	@ApiOperation(value = "Listar docentes", notes = "Lista todos los docentes", response = Docente.class)
+	@GetMapping(path = "/listar/{nPagina}/{cantidad}")
+	@ApiOperation(value = "Listar docentes", notes = "Lista todos los docentes según el paginado", response = Docente.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más docentes"),
 			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
-	public ResponseEntity<?> listar() throws ListNoContentException {
+	public ResponseEntity<?> listar(
+			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad
+			) throws ListNoContentException, ParameterInvalidException {
 
-		List<Docente> docentes = docenteService.listar();
+		List<Docente> docentes = docenteService.listar(nPagina, cantidad);
 		return new ResponseEntity<List<Docente>>(docentes, HttpStatus.OK);
 	}
 

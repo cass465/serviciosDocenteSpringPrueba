@@ -153,6 +153,18 @@ public class ExceptionsFilter extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<ErrorWrapper>(error, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(ParameterInvalidException.class)
+	public ResponseEntity<ErrorWrapper> filterParameterInvalidException(ParameterInvalidException ex, WebRequest request) {
+		ex.printStackTrace();
+
+		String status = HttpStatus.BAD_REQUEST.toString().split(" ")[0];
+		String statusPhrase = HttpStatus.BAD_REQUEST.getReasonPhrase();
+		String path = request.getDescription(false).replaceAll("uri=", "");
+
+		ErrorWrapper error = new ErrorWrapper(status, statusPhrase, ex.getMessage(), path);
+		return new ResponseEntity<ErrorWrapper>(error, HttpStatus.BAD_REQUEST);
+	}
+
 	// Exception
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorWrapper> filterException(Exception ex, WebRequest request) {
