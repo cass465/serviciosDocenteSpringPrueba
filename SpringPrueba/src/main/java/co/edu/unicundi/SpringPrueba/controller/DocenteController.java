@@ -1,4 +1,4 @@
-package co.edu.unicundi.SpringPrueba.controller;
+package co.edu.unicundi.SpringPrueba.controller
 
 import java.util.List;
 
