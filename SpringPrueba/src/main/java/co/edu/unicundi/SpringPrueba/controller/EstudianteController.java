@@ -1,11 +1,10 @@
 package co.edu.unicundi.SpringPrueba.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -88,8 +87,8 @@ public class EstudianteController {
 			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad
 			) throws ListNoContentException, ParameterInvalidException {
 
-		List<Estudiante> estudiantes = estudianteService.listar(nPagina, cantidad);
-		return new ResponseEntity<List<Estudiante>>(estudiantes, HttpStatus.OK);
+		Page<Estudiante> estudiantes = estudianteService.listar(nPagina, cantidad);
+		return new ResponseEntity<Page<Estudiante>>(estudiantes, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/obtenerPorId/{id}")

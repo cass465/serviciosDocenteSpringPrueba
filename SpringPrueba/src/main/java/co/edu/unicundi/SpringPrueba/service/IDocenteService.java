@@ -1,7 +1,6 @@
 package co.edu.unicundi.SpringPrueba.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicundi.SpringPrueba.entity.Docente;
@@ -20,7 +19,7 @@ public interface IDocenteService {
 	
 	void eliminar(Integer id) throws ObjectNotFoundException;
 	
-	List<Docente> listar(Integer nPagina, Integer cantidad) throws ListNoContentException, ParameterInvalidException;
+	Page<Docente> listar(Integer nPagina, Integer cantidad) throws ListNoContentException, ParameterInvalidException;
 	
 	Docente obtenerPorId(Integer id) throws ObjectNotFoundException;
 	
