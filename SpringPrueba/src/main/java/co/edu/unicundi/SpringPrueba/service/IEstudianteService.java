@@ -19,8 +19,16 @@ public interface IEstudianteService {
 
 	void eliminar(Integer id) throws ObjectNotFoundException;
 
-	Page<Estudiante> listar(Integer nPagina, Integer cantidad) throws ListNoContentException, ParameterInvalidException;
+	Page<Estudiante> listar(Integer nPagina, Integer cantidad, String orden) throws ListNoContentException, ParameterInvalidException;
 
 	Estudiante obtenerPorId(Integer id) throws ObjectNotFoundException;
+
+	Page<Estudiante> listarPorNombreOApellido(
+			Integer nPagina, Integer cantidad, String nombre, String apellido)
+			throws ListNoContentException, ParameterInvalidException;
+
+	Page<Estudiante> listarPorIdDocente(
+			Integer nPagina, Integer cantidad, Integer idDocente)
+			throws ListNoContentException, ParameterInvalidException;
 
 }

@@ -1,5 +1,7 @@
 package co.edu.unicundi.SpringPrueba.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -25,4 +27,8 @@ public interface IDocenteRepo extends JpaRepository<Docente, Integer>, PagingAnd
 	
 	@Query(value = "SELECT COUNT(d) FROM Docente d WHERE d.correo = ?2 AND d.id <> ?1")
 	Integer contarDocentesPorCorreo(Integer id, String correo);
+	
+	Page<Docente> findByNombreOrApellidoOrderByIdDesc(String nombre, String apellido, Pageable paginado);
+	
+	Page<Docente> findByEstudiantesNombre(String nombre, Pageable paginado);
 }

@@ -77,17 +77,18 @@ public class DocenteController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping(path = "/listar/{nPagina}/{cantidad}")
+	@GetMapping(path = "/listar/{nPagina}/{cantidad}/{orden}")
 	@ApiOperation(value = "Listar docentes", notes = "Lista todos los docentes según el paginado", response = Docente.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más docentes"),
 			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
 	public ResponseEntity<?> listar(
 			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
-			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad)
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "orden de listado", type = "String", value = "Orden del listado (ascendente o descendente)", required = true) @PathVariable String orden)
 			throws ListNoContentException, ParameterInvalidException {
 
-		Page<Docente> docentes = docenteService.listar(nPagina, cantidad);
+		Page<Docente> docentes = docenteService.listar(nPagina, cantidad, orden);
 		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
 	}
 
@@ -113,5 +114,36 @@ public class DocenteController {
 
 		Docente docente = docenteService.obtenerPorCedula(cedula);
 		return new ResponseEntity<Docente>(docente, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/listarPorNombreOApellido/{nPagina}/{cantidad}/{nombre}/{apellido}")
+	@ApiOperation(value = "Listar docentes por nombre o apellido", notes = "Lista todos los docentes con nombre o apellido según el paginado", response = Docente.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más docentes"),
+			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
+	public ResponseEntity<?> listarPorNombreOApellido(
+			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "nombre", type = "String", value = "Nombre de la consulta", required = true) @PathVariable String nombre,
+			@ApiParam(name = "apellido", type = "String", value = "Apellido de la consulta", required = true) @PathVariable String apellido)
+			throws ListNoContentException, ParameterInvalidException {
+
+		Page<Docente> docentes = docenteService.listarPorNombreOApellido(nPagina, cantidad, nombre, apellido);
+		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/listarPorNombreEstudiante/{nPagina}/{cantidad}/{nombre}")
+	@ApiOperation(value = "Listar docentes por nombre de estudiante", notes = "Lista todos los docentes por nombre de estudiante según el paginado", response = Docente.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más docentes"),
+			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
+	public ResponseEntity<?> listarPorNombreEstudiante(
+			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "nombre", type = "String", value = "Nombre de la consulta", required = true) @PathVariable String nombre)
+			throws ListNoContentException, ParameterInvalidException {
+
+		Page<Docente> docentes = docenteService.listarPorNombreEstudiante(nPagina, cantidad, nombre);
+		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
 	}
 }

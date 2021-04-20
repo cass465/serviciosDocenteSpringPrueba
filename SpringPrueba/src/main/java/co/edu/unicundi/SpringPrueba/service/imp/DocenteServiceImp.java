@@ -86,27 +86,39 @@ public class DocenteServiceImp implements IDocenteService {
 	}
 
 	@Override
-	public Page<Docente> listar(Integer nPagina, Integer cantidad)
+	public Page<Docente> listar(Integer nPagina, Integer cantidad, String orden)
 			throws ListNoContentException, ParameterInvalidException {
 
-		if (nPagina > -1 && cantidad > 0) {
-			PageRequest pageRequest = PageRequest.of(nPagina, cantidad, Sort.by("nombre").ascending());
-			Page<Docente> page = docenteRepo.findAll(pageRequest);
-			if (page.getContent().size() > 0) {
-				for (Docente docente : page.getContent()) {
-					docente.setEstudiantes(null);
+		if (orden.equals("ASC") || orden.equals("DESC")) {
+			if (nPagina > -1 && cantidad > 0) {
+				PageRequest pageRequest;
+				if (orden.equals("ASC")) {
+					pageRequest = PageRequest.of(nPagina, cantidad, Sort.by("nombre").ascending());
+				} else {
+					pageRequest = PageRequest.of(nPagina, cantidad, Sort.by("nombre").descending());
 				}
 
-				return page;
+				Page<Docente> page = docenteRepo.findAll(pageRequest);
+				if (page.getContent().size() > 0) {
+					for (Docente docente : page.getContent()) {
+						docente.setEstudiantes(null);
+					}
+
+					return page;
+				} else {
+					throw new ListNoContentException();
+				}
+			} else if (nPagina < 0 && cantidad > 0) {
+				throw new ParameterInvalidException("El número de página debe ser mínimo 0");
+			} else if (nPagina > -1 && cantidad < 1) {
+				throw new ParameterInvalidException("La cantidad de datos de página debe ser mínimo 1");
 			} else {
-				throw new ListNoContentException();
+				throw new ParameterInvalidException(
+						"El número de página debe ser minimo 0 y la cantidad de datos debe ser mínimo 1");
 			}
-		} else if (nPagina < 0 && cantidad > 0) {
-			throw new ParameterInvalidException("El número de página debe ser mínimo 0");
-		} else if (nPagina > -1 && cantidad < 1) {
-			throw new ParameterInvalidException("La cantidad de datos de página debe ser mínimo 1");
+
 		} else {
-			throw new ParameterInvalidException("El número de página debe ser minimo 0 y la cantidad de datos debe ser mínimo 1");
+			throw new ParameterInvalidException("Parámetro orden inválido, debe ser 'ASC' o 'DESC'");
 		}
 	}
 
@@ -136,4 +148,55 @@ public class DocenteServiceImp implements IDocenteService {
 		}
 	}
 
+	@Override
+	public Page<Docente> listarPorNombreOApellido(Integer nPagina, Integer cantidad, String nombre, String apellido)
+			throws ListNoContentException, ParameterInvalidException {
+
+		if (nPagina > -1 && cantidad > 0) {
+			PageRequest pageRequest = PageRequest.of(nPagina, cantidad);
+			Page<Docente> page = docenteRepo.findByNombreOrApellidoOrderByIdDesc(nombre, apellido, pageRequest);
+			if (page.getContent().size() > 0) {
+				for (Docente docente : page.getContent()) {
+					docente.setEstudiantes(null);
+				}
+
+				return page;
+			} else {
+				throw new ListNoContentException();
+			}
+		} else if (nPagina < 0 && cantidad > 0) {
+			throw new ParameterInvalidException("El número de página debe ser mínimo 0");
+		} else if (nPagina > -1 && cantidad < 1) {
+			throw new ParameterInvalidException("La cantidad de datos de página debe ser mínimo 1");
+		} else {
+			throw new ParameterInvalidException(
+					"El número de página debe ser minimo 0 y la cantidad de datos debe ser mínimo 1");
+		}
+	}
+
+	@Override
+	public Page<Docente> listarPorNombreEstudiante(Integer nPagina, Integer cantidad, String nombre)
+			throws ListNoContentException, ParameterInvalidException {
+
+		if (nPagina > -1 && cantidad > 0) {
+			PageRequest pageRequest = PageRequest.of(nPagina, cantidad);
+			Page<Docente> page = docenteRepo.findByEstudiantesNombre(nombre, pageRequest);
+			if (page.getContent().size() > 0) {
+				for (Docente docente : page.getContent()) {
+					docente.setEstudiantes(null);
+				}
+
+				return page;
+			} else {
+				throw new ListNoContentException();
+			}
+		} else if (nPagina < 0 && cantidad > 0) {
+			throw new ParameterInvalidException("El número de página debe ser mínimo 0");
+		} else if (nPagina > -1 && cantidad < 1) {
+			throw new ParameterInvalidException("La cantidad de datos de página debe ser mínimo 1");
+		} else {
+			throw new ParameterInvalidException(
+					"El número de página debe ser minimo 0 y la cantidad de datos debe ser mínimo 1");
+		}
+	}
 }

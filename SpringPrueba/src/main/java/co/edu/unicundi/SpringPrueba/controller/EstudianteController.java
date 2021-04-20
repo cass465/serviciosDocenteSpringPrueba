@@ -77,17 +77,18 @@ public class EstudianteController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping(path = "/listar/{nPagina}/{cantidad}")
+	@GetMapping(path = "/listar/{nPagina}/{cantidad}/{orden}")
 	@ApiOperation(value = "Listar estudiantes", notes = "Lista todos los estudiantes según el paginado", response = Estudiante.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más estudiantes"),
 			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
 	public ResponseEntity<?> listar(
 			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
-			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad
-			) throws ListNoContentException, ParameterInvalidException {
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "orden de listado", type = "String", value = "Orden del listado (ascendente o descendente)", required = true) @PathVariable String orden)
+			throws ListNoContentException, ParameterInvalidException {
 
-		Page<Estudiante> estudiantes = estudianteService.listar(nPagina, cantidad);
+		Page<Estudiante> estudiantes = estudianteService.listar(nPagina, cantidad, orden);
 		return new ResponseEntity<Page<Estudiante>>(estudiantes, HttpStatus.OK);
 	}
 
@@ -102,5 +103,35 @@ public class EstudianteController {
 		Estudiante estudiante = estudianteService.obtenerPorId(id);
 		return new ResponseEntity<Estudiante>(estudiante, HttpStatus.OK);
 	}
-}
 
+	@GetMapping(path = "/listarPorNombreOApellido/{nPagina}/{cantidad}/{nombre}/{apellido}")
+	@ApiOperation(value = "Listar estudiantes por nombre o apellido", notes = "Lista todos los estudiantes con nombre o apellido según el paginado", response = Estudiante.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más estudiantes"),
+			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
+	public ResponseEntity<?> listarPorNombreOApellido(
+			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "nombre", type = "String", value = "Nombre de la consulta", required = true) @PathVariable String nombre,
+			@ApiParam(name = "apellido", type = "String", value = "Apellido de la consulta", required = true) @PathVariable String apellido)
+			throws ListNoContentException, ParameterInvalidException {
+
+		Page<Estudiante> estudiantes = estudianteService.listarPorNombreOApellido(nPagina, cantidad, nombre, apellido);
+		return new ResponseEntity<Page<Estudiante>>(estudiantes, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/listarPorIdDocente/{nPagina}/{cantidad}/{idDocente}")
+	@ApiOperation(value = "Listar estudiantes por id de docente", notes = "Lista todos los estudiantes por id de docente según el paginado", response = Estudiante.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más estudiantes"),
+			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
+	public ResponseEntity<?> listarPorNombreEstudiante(
+			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "id docente", type = "Integer", value = "Id del docente de la consulta", required = true) @PathVariable Integer idDocente)
+			throws ListNoContentException, ParameterInvalidException {
+
+		Page<Estudiante> estudiantes = estudianteService.listarPorIdDocente(nPagina, cantidad, idDocente);
+		return new ResponseEntity<Page<Estudiante>>(estudiantes, HttpStatus.OK);
+	}
+}
