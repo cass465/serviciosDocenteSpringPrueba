@@ -45,7 +45,7 @@ public class DocenteController {
 			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Campo cedula requerido") })
 	public ResponseEntity<?> crear(
 			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con sus datos", required = true) @Valid @RequestBody Docente docente)
-			throws RegisteredObjectException, FieldRequiredException {
+			throws RegisteredObjectException, FieldRequiredException, ObjectNotFoundException {
 
 		docenteService.crear(docente);
 		return new ResponseEntity<String>("Docente registrado correctamente", HttpStatus.CREATED);
@@ -115,7 +115,7 @@ public class DocenteController {
 		Docente docente = docenteService.obtenerPorCedula(cedula);
 		return new ResponseEntity<Docente>(docente, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/listarPorNombreOApellido/{nPagina}/{cantidad}/{nombre}/{apellido}")
 	@ApiOperation(value = "Listar docentes por nombre o apellido", notes = "Lista todos los docentes con nombre o apellido según el paginado", response = Docente.class)
 	@ApiResponses(value = {
@@ -131,7 +131,7 @@ public class DocenteController {
 		Page<Docente> docentes = docenteService.listarPorNombreOApellido(nPagina, cantidad, nombre, apellido);
 		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/listarPorNombreEstudiante/{nPagina}/{cantidad}/{nombre}")
 	@ApiOperation(value = "Listar docentes por nombre de estudiante", notes = "Lista todos los docentes por nombre de estudiante según el paginado", response = Docente.class)
 	@ApiResponses(value = {
@@ -144,6 +144,22 @@ public class DocenteController {
 			throws ListNoContentException, ParameterInvalidException {
 
 		Page<Docente> docentes = docenteService.listarPorNombreEstudiante(nPagina, cantidad, nombre);
+		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/listarPorDireccion/{nPagina}/{cantidad}/{criterio}/{valor}")
+	@ApiOperation(value = "Listar docentes por direccion", notes = "Lista todos los docentes con direccion según el paginado", response = Docente.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpServletResponse.SC_OK, message = "La lista trae uno o más docentes"),
+			@ApiResponse(code = HttpServletResponse.SC_NO_CONTENT, message = "La lista está vacia") })
+	public ResponseEntity<?> listarPorDireccion(
+			@ApiParam(name = "numero página", type = "Integer", value = "Número de la página a listar", required = true) @PathVariable Integer nPagina,
+			@ApiParam(name = "tamaño página", type = "Integer", value = "Cantitdad de datos dentro de la página a listar", required = true) @PathVariable Integer cantidad,
+			@ApiParam(name = "criterio", type = "String", value = "Criterio de la consulta (detalle, barrio, ciudad, pais)", required = true) @PathVariable String criterio,
+			@ApiParam(name = "valor", type = "String", value = "Valor del filtro de consulta", required = true) @PathVariable String valor)
+			throws ListNoContentException, ParameterInvalidException {
+
+		Page<Docente> docentes = docenteService.listarPorDireccion(nPagina, cantidad, criterio, valor);
 		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
 	}
 }

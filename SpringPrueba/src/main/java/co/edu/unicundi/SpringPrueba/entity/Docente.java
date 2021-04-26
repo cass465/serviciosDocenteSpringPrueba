@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -57,6 +59,11 @@ public class Docente {
 	
 	@OneToMany(mappedBy = "docente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Estudiante> estudiantes;
+	
+	@Valid
+	@NotNull(message = "Objeto requerido")
+	@OneToOne(mappedBy = "docente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Direccion direccion;
 
 	public Docente() {
 
@@ -157,6 +164,20 @@ public class Docente {
 	 */
 	public void setEstudiantes(List<Estudiante> estudiantes) {
 		this.estudiantes = estudiantes;
+	}
+
+	/**
+	 * @return the direccion
+	 */
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	/**
+	 * @param direccion the direccion to set
+	 */
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
 	}
 	
 }

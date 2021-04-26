@@ -35,6 +35,8 @@ public class DocenteServiceImp implements IDocenteService {
 			if (docente.getEstudiantes() != null) {
 				docente.setEstudiantes(null);
 			}
+
+			docente.getDireccion().setDocente(docente);
 			docenteRepo.save(docente);
 		} else if (docenteCedula == null && docenteCorreo != null) {
 			throw new RegisteredObjectException("El correo ingresado ya existe");
@@ -62,6 +64,10 @@ public class DocenteServiceImp implements IDocenteService {
 				docenteId.setNombre(docente.getNombre());
 				docenteId.setApellido(docente.getApellido());
 				docenteId.setCorreo(docente.getCorreo());
+				docenteId.getDireccion().setDetalle(docente.getDireccion().getDetalle());
+				docenteId.getDireccion().setBarrio(docente.getDireccion().getBarrio());
+				docenteId.getDireccion().setCiudad(docente.getDireccion().getCiudad());
+				docenteId.getDireccion().setPais(docente.getDireccion().getPais());
 
 				docenteRepo.save(docenteId);
 			} else if (nDocentesCedula == 0 && nDocentesCorreo > 0) {
@@ -102,6 +108,7 @@ public class DocenteServiceImp implements IDocenteService {
 				if (page.getContent().size() > 0) {
 					for (Docente docente : page.getContent()) {
 						docente.setEstudiantes(null);
+						docente.getDireccion().setDocente(null);
 					}
 
 					return page;
@@ -127,6 +134,7 @@ public class DocenteServiceImp implements IDocenteService {
 		Docente docente = docenteRepo.findById(id)
 				.orElseThrow(() -> new ObjectNotFoundException("El id del docente no existe"));
 		docente.setEstudiantes(null);
+		docente.getDireccion().setDocente(null);
 		return docente;
 	}
 
@@ -139,6 +147,7 @@ public class DocenteServiceImp implements IDocenteService {
 		if (docente != null) {
 			if (docenteSQL.equals(docenteJPQL) && docenteJPQL.equals(docente)) {
 				docenteJPQL.setEstudiantes(null);
+				docenteJPQL.getDireccion().setDocente(null);
 				return docenteJPQL;
 			} else {
 				return null;
@@ -154,10 +163,12 @@ public class DocenteServiceImp implements IDocenteService {
 
 		if (nPagina > -1 && cantidad > 0) {
 			PageRequest pageRequest = PageRequest.of(nPagina, cantidad);
-			Page<Docente> page = docenteRepo.findByNombreOrApellidoOrderByIdDesc(nombre, apellido, pageRequest);
+			Page<Docente> page = docenteRepo.findByNombreIgnoreCaseOrApellidoIgnoreCaseOrderByIdDesc(nombre, apellido,
+					pageRequest);
 			if (page.getContent().size() > 0) {
 				for (Docente docente : page.getContent()) {
 					docente.setEstudiantes(null);
+					docente.getDireccion().setDocente(null);
 				}
 
 				return page;
@@ -184,11 +195,61 @@ public class DocenteServiceImp implements IDocenteService {
 			if (page.getContent().size() > 0) {
 				for (Docente docente : page.getContent()) {
 					docente.setEstudiantes(null);
+					docente.getDireccion().setDocente(null);
 				}
 
 				return page;
 			} else {
 				throw new ListNoContentException();
+			}
+		} else if (nPagina < 0 && cantidad > 0) {
+			throw new ParameterInvalidException("El número de página debe ser mínimo 0");
+		} else if (nPagina > -1 && cantidad < 1) {
+			throw new ParameterInvalidException("La cantidad de datos de página debe ser mínimo 1");
+		} else {
+			throw new ParameterInvalidException(
+					"El número de página debe ser minimo 0 y la cantidad de datos debe ser mínimo 1");
+		}
+	}
+
+	@Override
+	public Page<Docente> listarPorDireccion(Integer nPagina, Integer cantidad, String criterio, String valor)
+			throws ListNoContentException, ParameterInvalidException {
+
+		if (nPagina > -1 && cantidad > 0) {
+			if (criterio.equals("detalle") || criterio.equals("barrio") || criterio.equals("ciudad")
+					|| criterio.equals("pais")) {
+
+				PageRequest pageRequest = PageRequest.of(nPagina, cantidad);
+				Page<Docente> page = null;
+
+				switch (criterio) {
+				case "detalle":
+					page = docenteRepo.findByDireccionDetalleIgnoreCase(valor, pageRequest);
+					break;
+				case "barrio":
+					page = docenteRepo.findByDireccionBarrioIgnoreCase(valor, pageRequest);
+					break;
+				case "ciudad":
+					page = docenteRepo.findByDireccionCiudadIgnoreCase(valor, pageRequest);
+					break;
+				case "pais":
+					page = docenteRepo.findByDireccionPaisIgnoreCase(valor, pageRequest);
+					break;
+				}
+
+				if (page.getContent().size() > 0) {
+					for (Docente docente : page.getContent()) {
+						docente.setEstudiantes(null);
+						docente.getDireccion().setDocente(null);
+					}
+
+					return page;
+				} else {
+					throw new ListNoContentException();
+				}
+			} else {
+				throw new ParameterInvalidException("Criterio de busqueda de direccion incorrecto");
 			}
 		} else if (nPagina < 0 && cantidad > 0) {
 			throw new ParameterInvalidException("El número de página debe ser mínimo 0");

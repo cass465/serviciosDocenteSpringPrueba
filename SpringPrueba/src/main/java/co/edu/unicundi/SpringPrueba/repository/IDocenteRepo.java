@@ -28,7 +28,15 @@ public interface IDocenteRepo extends JpaRepository<Docente, Integer>, PagingAnd
 	@Query(value = "SELECT COUNT(d) FROM Docente d WHERE d.correo = ?2 AND d.id <> ?1")
 	Integer contarDocentesPorCorreo(Integer id, String correo);
 	
-	Page<Docente> findByNombreOrApellidoOrderByIdDesc(String nombre, String apellido, Pageable paginado);
+	Page<Docente> findByNombreIgnoreCaseOrApellidoIgnoreCaseOrderByIdDesc(String nombre, String apellido, Pageable paginado);
 	
 	Page<Docente> findByEstudiantesNombre(String nombre, Pageable paginado);
+	
+	Page<Docente> findByDireccionDetalleIgnoreCase(String detalle, Pageable paginado);
+	
+	Page<Docente> findByDireccionBarrioIgnoreCase(String barrio, Pageable paginado);
+	
+	Page<Docente> findByDireccionCiudadIgnoreCase(String ciudad, Pageable paginado);
+	
+	Page<Docente> findByDireccionPaisIgnoreCase(String pais, Pageable paginado);
 }
