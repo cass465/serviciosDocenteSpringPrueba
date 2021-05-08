@@ -28,17 +28,17 @@ public class Grupo {
 	private Integer id;
 	
 	
-	@ApiModelProperty(value = "Codigo del grupo", required = true, allowableValues = "range[7, 10]")
+	@ApiModelProperty(value = "Codigo del grupo", required = true, allowableValues = "range[3, 4]")
 	@NotNull(message = "Campo requerido")
 	@Pattern(regexp = "^([0-9])*$", message = "Solo valores numéricos")
-	@Size(min = 3, max = 11, message = "La longitud debe estar entre 3 y 11")
-	@Column(name = "codigo", length = 11	, nullable = false, unique = true)
+	@Size(min = 3, max = 4, message = "La longitud debe estar entre 3 y 4")
+	@Column(name = "codigo", length = 4	, nullable = false)
 	private String codigo;
 	
-	@ApiModelProperty(value = "Programa del grupo", required = true, allowableValues = "range[2, 30]")
+	@ApiModelProperty(value = "Programa del grupo", required = true, allowableValues = "range[3, 50]")
 	@NotNull(message = "Campo requerido")
 	@Pattern(regexp = "^[a-zA-Z ]*$", message = "Formato incorrecto")
-	@Size(min = 3, max = 50, message = "La longitud debe estar entre 5 y 50")
+	@Size(min = 3, max = 50, message = "La longitud debe estar entre 3 y 50")
 	@Column(name = "programa", length = 50, nullable = false)
 	private String programa;
 

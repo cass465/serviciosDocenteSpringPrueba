@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.unicundi.SpringPrueba.dto.DocenteGruposDTO;
 import co.edu.unicundi.SpringPrueba.entity.Docente;
 import co.edu.unicundi.SpringPrueba.exception.FieldRequiredException;
 import co.edu.unicundi.SpringPrueba.exception.ListNoContentException;
@@ -23,6 +24,7 @@ import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
 import co.edu.unicundi.SpringPrueba.exception.ParameterInvalidException;
 import co.edu.unicundi.SpringPrueba.exception.RegisteredObjectException;
 import co.edu.unicundi.SpringPrueba.service.IDocenteService;
+import co.edu.unicundi.SpringPrueba.service.IGrupoDocenteService;
 import io.swagger.annotations.Api;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +39,9 @@ public class DocenteController {
 
 	@Autowired
 	private IDocenteService docenteService;
+	
+	@Autowired
+	private IGrupoDocenteService grupoDocenteService;
 
 	@PostMapping(path = "/crear")
 	@ApiOperation(value = "Crear docente", notes = "Crear un docente en la lista")
@@ -161,5 +166,17 @@ public class DocenteController {
 
 		Page<Docente> docentes = docenteService.listarPorDireccion(nPagina, cantidad, criterio, valor);
 		return new ResponseEntity<Page<Docente>>(docentes, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/obtenerGruposPorIdDocente/{idDocente}")
+	@ApiOperation(value = "Obtener docente con sus grupos por id", notes = "Obtiene al docente filtrando por id con sus grupos")
+	@ApiResponses(value = { @ApiResponse(code = HttpServletResponse.SC_OK, message = "Docente encontrado"),
+			@ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "No se encontro el docente") })
+	public ResponseEntity<?> obtenerGruposPorIdDocente(
+			@ApiParam(name = "id", type = "Integer", value = "Id del docente a obtener", required = true) @PathVariable Integer idDocente)
+			throws ObjectNotFoundException {
+
+		DocenteGruposDTO docente = grupoDocenteService.listarPorIdDocente(idDocente);
+		return new ResponseEntity<DocenteGruposDTO>(docente, HttpStatus.OK);
 	}
 }
