@@ -14,7 +14,7 @@ import co.edu.unicundi.SpringPrueba.service.IGrupoDocenteViewService;
 import co.edu.unicundi.SpringPrueba.view.GrupoDocenteView;
 
 @Service
-public class IGrupoDocenteViewServiceImp implements IGrupoDocenteViewService {
+public class GrupoDocenteViewServiceImp implements IGrupoDocenteViewService {
 
 	@Autowired
 	private IGrupoDocenteViewRepo grupoDocenteViewRepo;

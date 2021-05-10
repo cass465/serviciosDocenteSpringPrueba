@@ -9,5 +9,7 @@ import co.edu.unicundi.SpringPrueba.exception.ObjectNotFoundException;
 @Service
 public interface IGrupoDocenteService extends ICrud<GrupoDocente, Integer>{
 
-	DocenteGruposDTO listarPorIdDocente(Integer idDocente) throws ObjectNotFoundException;
+	void eliminar(Integer idDocente, Integer idGrupo) throws ObjectNotFoundException;
+	
+	DocenteGruposDTO obtenerGruposPorIdDocente(Integer idDocente) throws ObjectNotFoundException;
 }

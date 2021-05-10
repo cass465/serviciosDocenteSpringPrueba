@@ -176,7 +176,7 @@ public class DocenteController {
 			@ApiParam(name = "id", type = "Integer", value = "Id del docente a obtener", required = true) @PathVariable Integer idDocente)
 			throws ObjectNotFoundException {
 
-		DocenteGruposDTO docente = grupoDocenteService.listarPorIdDocente(idDocente);
+		DocenteGruposDTO docente = grupoDocenteService.obtenerGruposPorIdDocente(idDocente);
 		return new ResponseEntity<DocenteGruposDTO>(docente, HttpStatus.OK);
 	}
 }
