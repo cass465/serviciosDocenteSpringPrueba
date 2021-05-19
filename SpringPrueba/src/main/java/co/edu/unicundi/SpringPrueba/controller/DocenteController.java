@@ -40,19 +40,7 @@ public class DocenteController {
 	@Autowired
 	private IDocenteService docenteService;
 
-	@PostMapping(path = "/crear")
-	@ApiOperation(value = "Crear docente", notes = "Crear un docente en la lista")
-	@ApiResponses(value = { @ApiResponse(code = HttpServletResponse.SC_CREATED, message = "Creado correctamente"),
-			@ApiResponse(code = HttpServletResponse.SC_CONFLICT, message = "La cedula ya existe"),
-			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Campo cedula requerido") })
-	public ResponseEntity<?> crear(
-			@ApiParam(name = "Docente", type = "Object", value = "Objeto docente con sus datos", required = true) @Valid @RequestBody Docente docente)
-			throws RegisteredObjectException, FieldRequiredException {
-
-		docenteService.crear(docente);
-		return new ResponseEntity<String>("Docente registrado correctamente", HttpStatus.CREATED);
-	}
-
+	
 	@PutMapping(path = "/editar")
 	@ApiOperation(value = "Editar docente", notes = "Editar a un docente de la lista si existe")
 	@ApiResponses(value = { @ApiResponse(code = HttpServletResponse.SC_OK, message = "Editado correctamente"),
