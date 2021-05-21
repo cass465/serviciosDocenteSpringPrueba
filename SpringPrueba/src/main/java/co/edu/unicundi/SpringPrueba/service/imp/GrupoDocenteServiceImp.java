@@ -69,7 +69,6 @@ public class GrupoDocenteServiceImp implements IGrupoDocenteService {
 
 		if (grupoDocenteRepo.findByGrupoIdAndDocenteId(grupo.getId(), docente.getId()) != null) {
 			grupoDocenteRepo.editar(entity.getJornada(), entity.getDocente().getId(), entity.getGrupo().getId());
-			;
 		} else {
 			throw new ObjectNotFoundException("La relación no se encuentra registrada");
 		}
