@@ -11,8 +11,11 @@ import co.edu.unicundi.SpringPrueba.entity.Usuario;
 public interface IUsuarioRepo extends JpaRepository<Usuario, Integer>, PagingAndSortingRepository<Usuario, Integer> {
 	
 	Usuario findOneByCedula(String cedula);
+    Usuario findOneByNick(String nick);
 	
 	@Query(value = "SELECT COUNT(u) FROM Usuario u WHERE u.cedula = ?2 AND u.id <> ?1")
 	Integer contarUsuariosPorCedula(Integer id, String cedula);
 	
 }
+
+	

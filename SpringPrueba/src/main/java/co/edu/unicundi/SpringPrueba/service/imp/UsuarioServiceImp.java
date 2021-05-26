@@ -158,9 +158,10 @@ public class UsuarioServiceImp implements IUsuarioService, UserDetailsService {
 	public UserDetails loadUserByUsername(String cedula) throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepo.findOneByCedula(cedula);
 		
+        /*
 		if (usuario == null) {
-			//throw new ObjectNotFoundException("La cedula del usuario no existe");
-		}
+			throw new LoginException("Usuario no encontrado");
+		}*/
 		
 		List<GrantedAuthority> roles = new ArrayList<>();
 		roles.add(new SimpleGrantedAuthority(usuario.getRol().getNombre()));
@@ -169,5 +170,7 @@ public class UsuarioServiceImp implements IUsuarioService, UserDetailsService {
 		
 		return ud;
 	}
+    
+    
 
 }

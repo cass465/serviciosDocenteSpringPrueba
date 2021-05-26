@@ -179,4 +179,17 @@ public class ExceptionsFilter extends ResponseEntityExceptionHandler {
 		ErrorWrapper error = new ErrorWrapper(status, statusPhrase, ex.getMessage(), path);
 		return new ResponseEntity<ErrorWrapper>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@ExceptionHandler(LoginException.class)
+	public ResponseEntity<ErrorWrapper> filterLoginException(LoginException ex, WebRequest request) {
+		ex.printStackTrace();
+
+		String status = HttpStatus.UNAUTHORIZED.toString().split(" ")[0];
+		String statusPhrase = HttpStatus.UNAUTHORIZED.getReasonPhrase();
+		String path = request.getDescription(false).replaceAll("uri=", "");
+
+		ErrorWrapper error = new ErrorWrapper(status, statusPhrase, ex.getMessage(), path);
+		return new ResponseEntity<ErrorWrapper>(error, HttpStatus.UNAUTHORIZED);
+	}
+	
 }
