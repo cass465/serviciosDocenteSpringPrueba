@@ -46,6 +46,13 @@ public class Usuario {
 	@Column(name = "apellido", length = 30, nullable = false)
 	private String apellido;
 	
+	@ApiModelProperty(value = "Nick name del usuario", required = true)
+	@NotNull(message = "Campo requerido")
+	@Size(min = 6, message = "La longitud debe tener como mínimo 6 caracteres")
+	@Column(columnDefinition = "TEXT", name = "nick", nullable = false)
+	private String nick;
+	
+	
 	@ApiModelProperty(value = "Clave del usuario", required = true)
 	@NotNull(message = "Campo requerido")
 	@Size(min = 6, message = "La longitud debe tener como mínimo 6 caracteres")
@@ -114,6 +121,21 @@ public class Usuario {
 	 */
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+		
+
+	/**
+	 * @return the nick
+	 */
+	public String getNick() {
+		return nick;
+	}
+
+	/**
+	 * @param nick the nick to set
+	 */
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	/**
