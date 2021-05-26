@@ -15,7 +15,7 @@ class SpringPruebaApplicationTests {
 	
 	@Test
 	void verificarClave() {
-		System.out.println("Resultado:--------------------  " + bcrypt.encode("1234"));
+		System.out.println("Resultado:--------------------  " + bcrypt.encode("admin"));
 		assertTrue(true);
 	}
 

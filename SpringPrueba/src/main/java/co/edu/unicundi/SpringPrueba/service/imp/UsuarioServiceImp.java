@@ -155,8 +155,8 @@ public class UsuarioServiceImp implements IUsuarioService, UserDetailsService {
 	 * Iniciar sesion
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String cedula) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepo.findOneByCedula(cedula);
+	public UserDetails loadUserByUsername(String nick) throws UsernameNotFoundException {
+		Usuario usuario = usuarioRepo.findOneByNick(nick);
 		
         /*
 		if (usuario == null) {
@@ -166,7 +166,7 @@ public class UsuarioServiceImp implements IUsuarioService, UserDetailsService {
 		List<GrantedAuthority> roles = new ArrayList<>();
 		roles.add(new SimpleGrantedAuthority(usuario.getRol().getNombre()));
 		
-		UserDetails ud = new User(usuario.getCedula(), usuario.getClave(), roles);
+		UserDetails ud = new User(usuario.getNick(), usuario.getClave(), roles);
 		
 		return ud;
 	}
