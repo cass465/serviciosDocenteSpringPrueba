@@ -50,8 +50,8 @@ public class DocenteController {
 			throws RegisteredObjectException, FieldRequiredException {
 
 		docenteService.crear(docente);
-		return new ResponseEntity<String>("Docente registrado correctamente", HttpStatus.CREATED);
-	}
+		return new ResponseEntity<String>("Docente registrado correctamente", HttpStatus.CREATED)
+	
 
 	@PutMapping(path = "/editar")
 	@ApiOperation(value = "Editar docente", notes = "Editar a un docente de la lista si existe")
